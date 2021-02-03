@@ -1,4 +1,5 @@
 import math
+import itertools
 
 # converts lists of strings to list of integers
 def StrListToInt(l):
@@ -36,6 +37,30 @@ def CheckTile(index, n, board):
                 return True
     return False
 
+#check if there are duplicates in a list
+def checkDuplicates(numbers):
+    for i in range(0,len(numbers)):
+        for j in range(i+1,len(numbers)):
+            if numbers[i] == numbers[j]:
+                if numbers[i]!=0 or numbers[j]!=0:
+                    return True
+    return False
+
+#checks if the board is solveable
+def validateBoard(board):
+    rows = SplitByNumber(board, 9)
+    columns = SplitByNumber([row[i] for i in range(0,9) for row in SplitByNumber(board,9)], 9)
+    squares = [[] for _ in range(9)]
+    for x in range(0,81):
+        squares[math.floor(x/3)%3 + math.floor(x/27)*3].append(board[x]) 
+
+    for numbers in itertools.chain(rows,columns,squares):
+        if(checkDuplicates(numbers)):
+            return True
+
+    return False
+
+
 #translates an rgb tuple of int to a tkinter friendly color code (HEX)
 def toHex(rgb):
     return "#%02x%02x%02x" % rgb 
@@ -44,8 +69,13 @@ def toHex(rgb):
 def Solve(board):
     board = [int(x) for x in board]
     solved_board = board.copy()
-    index = 0
+    
+    #checks if the board is solveable
+    if (validateBoard(board)):
+        print("Invalid Board")
+        return False
 
+    index = 0
     while index < 81:  
         if board[index] == 0: # if the tile is placeable
             digitBeforeChange = solved_board[index]
@@ -63,5 +93,4 @@ def Solve(board):
         else:
             index += 1 # if the tile isn't placeable it moves on
     return solved_board
-
 

@@ -33,6 +33,8 @@ def clear(entries):
 # solves the board and changes all the entries accordingly
 def solveBoard(entries, window):
     board = Solve(board=getBoard(entries))
+    if board == False:
+        return False
     for idx,box in enumerate(entries):
         if box.get() == '':
             box.insert(0,str(board[idx]))
