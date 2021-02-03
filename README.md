@@ -1,5 +1,5 @@
 # SodukuSolver
- Backtracking Soduku Solver with PyGame GUI 
+ Backtracking Soduku Solver with Tkinter GUI 
 
 ## Description
 
